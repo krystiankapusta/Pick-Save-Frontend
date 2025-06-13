@@ -10,6 +10,7 @@ const SignupForm = () => {
     const {
         register,
         handleSubmit,
+        setError,
         formState: { errors },
     } = useForm<SignupFormInputs>();
 
@@ -20,10 +21,25 @@ const SignupForm = () => {
             console.log('On submit response: ', response);
             if (response && response.username && response.email) {
                 console.log('Registration successful!');
+                localStorage.setItem('email', response.email);
                 navigate(`/auth/verify`);
             }
         } catch (error: any) {
-            console.error('Signup Error:', error.response?.data);
+            const errorMessage = error.response?.data;
+
+            if (errorMessage === 'Username is already registered') {
+                setError('username', {
+                    type: 'server',
+                    message: errorMessage,
+                });
+            } else if (errorMessage === 'Email is already registered') {
+                setError('email', {
+                    type: 'server',
+                    message: errorMessage,
+                });
+            }
+
+            console.error('Signup Error:', errorMessage);
         }
     };
 
@@ -41,7 +57,7 @@ const SignupForm = () => {
                         required: 'Username is required',
                         pattern: {
                             value: /^[a-zA-Z0-9_]{3,30}$/,
-                            message: 'Username must have 3-30 characters long',
+                            message: 'Username must be 3-30 characters long',
                         },
                     }}
                     error={errors.username?.message}

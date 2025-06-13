@@ -3,3 +3,8 @@ export type SignupFormInputs = {
     email: string;
     password: string;
 };
+
+export type VerifyFormInputs = {
+    email: string;
+    verificationCode: string;
+};
