@@ -1,4 +1,4 @@
-import type { SignupFormInputs } from '../Models/User';
+import type { SignupFormInputs, VerifyFormInputs } from '../Models/User';
 import { auth_api } from '../API/AxiosConfig';
 
 export const signupAPI = async (signupFormInputs: SignupFormInputs) => {
@@ -9,8 +9,33 @@ export const signupAPI = async (signupFormInputs: SignupFormInputs) => {
             signupFormInputs
         );
         return response.data;
-    } catch (error) {
-        console.log('Signup error: ', error);
+    } catch (error: any) {
+        console.error('Signup error: ', error);
+        throw error;
+    }
+};
+
+export const verify = async (verifyFormInputs: VerifyFormInputs) => {
+    try {
+        const response = await auth_api.post<VerifyFormInputs>(
+            `/auth/verify`,
+            verifyFormInputs
+        );
+        return response.data;
+    } catch (error: any) {
+        console.error('Verify error ', error);
+        throw error;
+    }
+};
+
+export const resendVerificationCode = async (email: string) => {
+    try {
+        const response = await auth_api.post(`/auth/resend-verification`, {
+            email,
+        });
+        return response.data;
+    } catch (error: any) {
+        console.error('Resend code error: ', error);
         throw error;
     }
 };

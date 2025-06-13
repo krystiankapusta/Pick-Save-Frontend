@@ -4,11 +4,12 @@ import type { UseFormRegister } from 'react-hook-form';
 import './FormInput.css';
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     label: string;
-    type: 'text' | 'email' | 'password';
+    type: 'text' | 'email' | 'password' | 'code';
     name: string;
     error?: string;
     register: UseFormRegister<any>;
     registerOptions?: Object;
+    required?: boolean;
 }
 
 export const FormInput: React.FC<InputProps> = ({
@@ -18,7 +19,7 @@ export const FormInput: React.FC<InputProps> = ({
     error,
     register,
     registerOptions,
-    required,
+    required = false,
     ...rest
 }) => {
     const [showPassword, setShowPassword] = useState(false);
@@ -43,9 +44,9 @@ export const FormInput: React.FC<InputProps> = ({
                                 : 'password'
                             : type
                     }
-                    {...register(name, registerOptions)}
                     aria-invalid={error ? 'true' : 'false'}
                     {...rest}
+                    {...register(name, registerOptions)}
                 />
                 {type === 'password' && (
                     <button
