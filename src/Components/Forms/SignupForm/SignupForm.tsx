@@ -1,8 +1,8 @@
-import FormInput from '../FormInput/FormInput';
+import FormInput from '../../FormInput/FormInput';
 import { useForm } from 'react-hook-form';
-import Button from '../Button/Button';
-import { signupAPI } from '../../Services/AuthServices';
-import type { SignupFormInputs } from '../../Models/User';
+import Button from '../../Button/Button';
+import { signupAPI } from '../../../Services/AuthServices';
+import type { SignupFormInputs } from '../../../Models/User';
 import { useNavigate } from 'react-router-dom';
 
 const SignupForm = () => {
@@ -25,8 +25,8 @@ const SignupForm = () => {
                 navigate(`/auth/verify`);
             }
         } catch (error: any) {
-            const errorMessage = error.response?.data;
-
+            console.log('Signup error caught: ', error);
+            const errorMessage = error.message || 'Something went wrong';
             if (errorMessage === 'Username is already registered') {
                 setError('username', {
                     type: 'server',
@@ -37,8 +37,14 @@ const SignupForm = () => {
                     type: 'server',
                     message: errorMessage,
                 });
+            } else {
+                setError('root', {
+                    type: 'server',
+                    message:
+                        errorMessage ||
+                        'Registration failed. Please try again.',
+                });
             }
-
             console.error('Signup Error:', errorMessage);
         }
     };
@@ -66,7 +72,7 @@ const SignupForm = () => {
 
                 <FormInput
                     label="Email"
-                    type="text"
+                    type="email"
                     name="email"
                     placeholder="Enter your email"
                     register={register}

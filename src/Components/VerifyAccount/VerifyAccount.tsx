@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import './VerifyAccount.css';
 import Button from '../Button/Button';
 import type { VerifyFormInputs } from '../../Models/User';
@@ -8,16 +8,43 @@ import type { SweetAlertResult } from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
 const VerifyAccount = () => {
-    const email = localStorage.getItem('email') || '';
-    console.log('Register email -> ', email);
+    const [emailToVerify, setEmailToVerify] = useState('');
+    useEffect(() => {
+        const manuallyVerifyEmail = localStorage.getItem('manuallyVerifyEmail');
+        console.log(
+            'VerifyAccount manuallyVerifyEmail -> ',
+            manuallyVerifyEmail
+        );
+
+        const fallbackEmail = localStorage.getItem('email');
+        const selectedEmail = manuallyVerifyEmail || fallbackEmail || '';
+        setEmailToVerify(selectedEmail);
+
+        console.log(
+            'VerifyAccount after set email fallbackEmail -> ',
+            fallbackEmail
+        );
+
+        console.log(
+            'VerifyAccount after set email manuallyVerifyEmail -> ',
+            manuallyVerifyEmail
+        );
+
+        console.log('VerifyAccount -> mail to register -> ', selectedEmail);
+    }, []);
 
     const [otp, setOtp] = useState(new Array(6).fill(''));
+    const [reloadPage, forceUpdate] = useReducer((x) => x + 1, 0);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        setOtp(new Array(6).fill(''));
+    }, [reloadPage]);
 
     const onVerify = async () => {
         const verificationCode = otp.join('');
         const data: VerifyFormInputs = {
-            email,
+            email: emailToVerify,
             verificationCode,
         };
         try {
@@ -38,15 +65,24 @@ const VerifyAccount = () => {
                 showConfirmButton: false,
             });
             if (result.dismiss === Swal.DismissReason.timer) {
+                localStorage.removeItem('manuallyVerifyEmail');
+                localStorage.removeItem('email');
                 navigate(`/auth/login`);
             }
         } catch (error: any) {
-            console.error('Verify error: ', error);
-            const errorData = error.response?.data?.verificationCode;
+            console.error('onVerify verify error: ', error.fieldErrors);
+            console.error('onVerify verify error: ', error.message);
+
+            const errorMessage =
+                error.fieldErrors?.verificationCode ||
+                error.message ||
+                'Something went wrong';
+
+            console.log('Error data -> ', errorMessage);
             await Swal.fire({
                 icon: 'error',
                 title: 'Verification Failed',
-                text: errorData || 'Something went wrong.',
+                text: errorMessage,
                 showClass: {
                     popup: 'animate__animated animate__shakeX animate__faster',
                 },
@@ -57,6 +93,7 @@ const VerifyAccount = () => {
                 timerProgressBar: true,
                 showConfirmButton: false,
             });
+            forceUpdate();
         }
     };
 
@@ -71,10 +108,9 @@ const VerifyAccount = () => {
     }
 
     const handleResendCode = async () => {
-        const emailToResendCode = localStorage.getItem('email') || '';
-        if (!emailToResendCode) return;
+        if (!emailToVerify) return;
         try {
-            const response = await resendVerificationCode(emailToResendCode);
+            const response = await resendVerificationCode(emailToVerify);
             console.log('Resend code response: ', response);
             await Swal.fire({
                 icon: 'success',
@@ -95,7 +131,7 @@ const VerifyAccount = () => {
                 timerProgressBar: true,
                 showConfirmButton: false,
             });
-            navigate('/auth/login');
+            forceUpdate();
         }
     };
     return (
@@ -103,7 +139,8 @@ const VerifyAccount = () => {
             <div>
                 <h1>Verify your account</h1>
                 <p>
-                    We send you the six digit code to <strong>{email}</strong>
+                    We send you the six digit code to{' '}
+                    <strong>{emailToVerify}</strong>
                 </p>
                 <p>Enter the code below to confirm your email address</p>
             </div>
