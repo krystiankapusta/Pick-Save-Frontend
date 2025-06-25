@@ -4,6 +4,7 @@ import Button from '../../Button/Button';
 import { signupAPI } from '../../../Services/AuthServices';
 import type { SignupFormInputs } from '../../../Models/User';
 import { useNavigate } from 'react-router-dom';
+import welcomeIllustration from '../../../assets/welcome.svg';
 
 const SignupForm = () => {
     const navigate = useNavigate();
@@ -50,64 +51,96 @@ const SignupForm = () => {
     };
 
     return (
-        <div>
-            <h2>Signup form</h2>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <FormInput
-                    label="Username"
-                    type="text"
-                    name="username"
-                    placeholder="Enter your username"
-                    register={register}
-                    registerOptions={{
-                        required: 'Username is required',
-                        pattern: {
-                            value: /^[a-zA-Z0-9_]{3,30}$/,
-                            message: 'Username must be 3-30 characters long',
-                        },
-                    }}
-                    error={errors.username?.message}
-                    required
-                />
+        <section className="min-h-screen flex items-center justify-center bg-blue-200">
+            <div className="flex items-center justify-center w-full max-w-6xl bg-white shadow-lg rounded-xl p-0 md:flex">
+                <div className="w-full md:w-1/2 p-10">
+                    <div className="mb-8 text-center">
+                        <h2 className="text-gray-500 text-4xl font-bold -mt-4 mb-12">
+                            Signup
+                        </h2>
+                    </div>
 
-                <FormInput
-                    label="Email"
-                    type="email"
-                    name="email"
-                    placeholder="Enter your email"
-                    register={register}
-                    registerOptions={{
-                        required: 'Email is required',
-                        pattern: {
-                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                            message: 'Invalid email address',
-                        },
-                    }}
-                    error={errors.email?.message}
-                    required
-                />
+                    <form
+                        onSubmit={handleSubmit(onSubmit)}
+                        className="space-y-6 "
+                    >
+                        <div>
+                            <FormInput
+                                className="w-full text-left text-sm border border-gray-400 rounded-md p-2 my-1"
+                                label="Username"
+                                type="text"
+                                name="username"
+                                placeholder="Enter your username"
+                                register={register}
+                                registerOptions={{
+                                    required: 'Username is required',
+                                    pattern: {
+                                        value: /^[a-zA-Z0-9_]{3,30}$/,
+                                        message:
+                                            'Username must be 3-30 characters long',
+                                    },
+                                }}
+                                error={errors.username?.message}
+                                required
+                            />
 
-                <FormInput
-                    label="Password"
-                    type="password"
-                    name="password"
-                    placeholder={'Enter your password'}
-                    register={register}
-                    registerOptions={{
-                        required: 'Password is required',
-                        pattern: {
-                            value: /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\S+$).{8,20}$/,
-                            message:
-                                'Password must be at least 8 characters long, include one uppercase letter, one digit, and one special character',
-                        },
-                    }}
-                    error={errors.password?.message}
-                    required
-                />
-                <Button type="submit" variant="primary" label="Sign Up" />
-                {errors.root && <p>{errors.root?.message}</p>}
-            </form>
-        </div>
+                            <FormInput
+                                className="w-full text-left text-sm border border-gray-400 rounded-md p-2 my-1"
+                                label="Email"
+                                type="email"
+                                name="email"
+                                placeholder="Enter your email"
+                                register={register}
+                                registerOptions={{
+                                    required: 'Email is required',
+                                    pattern: {
+                                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                        message: 'Invalid email address',
+                                    },
+                                }}
+                                error={errors.email?.message}
+                                required
+                            />
+
+                            <FormInput
+                                className="w-full text-left text-sm border border-gray-400 rounded-md p-2 my-1"
+                                label="Password"
+                                type="password"
+                                name="password"
+                                placeholder={'Enter your password'}
+                                register={register}
+                                registerOptions={{
+                                    required: 'Password is required',
+                                    pattern: {
+                                        value: /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\S+$).{8,20}$/,
+                                        message:
+                                            'Password must be at least 8 characters long, include one uppercase letter, one digit, and one special character',
+                                    },
+                                }}
+                                error={errors.password?.message}
+                                required
+                            />
+                        </div>
+                        <div className="flex justify-center items-center">
+                            <Button
+                                type="submit"
+                                variant="primary"
+                                label="Sign Up"
+                            />
+                        </div>
+
+                        {errors.root && (
+                            <p className="text-sm text-red-500">
+                                {errors.root?.message}
+                            </p>
+                        )}
+                    </form>
+                </div>
+                <div className="hidden md:block md:w-1/2 p-10">
+                    <img alt="Welcome illustration" src={welcomeIllustration} />
+                </div>
+            </div>
+        </section>
     );
 };
 

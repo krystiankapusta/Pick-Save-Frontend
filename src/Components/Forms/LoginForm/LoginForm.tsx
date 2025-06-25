@@ -6,6 +6,7 @@ import { UseAuth } from '../../../Context/UseAuth';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import login from '../../../assets/login.svg';
 
 const LoginForm = () => {
     const { loginUser } = UseAuth();
@@ -74,52 +75,78 @@ const LoginForm = () => {
     };
 
     return (
-        <div>
-            <h2>Login</h2>
-            <form onSubmit={handleSubmit(handleLogin)}>
-                <FormInput
-                    label="Email"
-                    type="email"
-                    name="email"
-                    placeholder="Enter your email"
-                    register={register}
-                    registerOptions={{
-                        required: 'Email is required',
-                        pattern: {
-                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                            message: 'Invalid email address',
-                        },
-                    }}
-                    error={errors.email?.message}
-                    required
-                />
+        <section className="min-h-screen flex items-center justify-center bg-blue-200">
+            <div className="flex items-center justify-center w-full max-w-6xl bg-white shadow-lg rounded-xl p-0 md:flex">
+                <div className="w-full md:w-1/2 p-10">
+                    <div className="mb-8 text-center">
+                        <h2 className="text-gray-500 text-4xl font-bold -mt-4 mb-12">
+                            Login
+                        </h2>
+                    </div>
 
-                <FormInput
-                    label="Password"
-                    type="password"
-                    name="password"
-                    placeholder="Enter your password"
-                    register={register}
-                    registerOptions={{
-                        required: 'Password is required',
-                    }}
-                    error={errors.password?.message}
-                    required
-                />
-                <Button type="submit" variant="primary" label="Login" />
-                {showVerifyButton && (
-                    <Button
-                        onClick={handleNavigate}
-                        type="button"
-                        variant="warning"
-                        label="Verify account"
-                    />
-                )}
-                {errors.root && (
-                    <p className="form-error">{errors.root?.message}</p>
-                )}
-            </form>
-        </div>
+                    <form
+                        onSubmit={handleSubmit(handleLogin)}
+                        className="space-y-6 "
+                    >
+                        <FormInput
+                            className="w-full text-left text-sm border border-gray-400 rounded-md p-2 my-1"
+                            label="Email"
+                            type="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            register={register}
+                            registerOptions={{
+                                required: 'Email is required',
+                                pattern: {
+                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                    message: 'Invalid email address',
+                                },
+                            }}
+                            error={errors.email?.message}
+                            required
+                        />
+
+                        <FormInput
+                            className="w-full text-left text-sm border border-gray-400 rounded-md p-2 my-1"
+                            label="Password"
+                            type="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            register={register}
+                            registerOptions={{
+                                required: 'Password is required',
+                            }}
+                            error={errors.password?.message}
+                            required
+                        />
+                        <div className="flex justify-center items-center">
+                            <Button
+                                type="submit"
+                                variant="primary"
+                                label="Login"
+                            />
+                            {showVerifyButton && (
+                                <Button
+                                    onClick={handleNavigate}
+                                    type="button"
+                                    variant="warning"
+                                    label="Verify account"
+                                />
+                            )}
+                        </div>
+
+                        {errors.root && (
+                            <p className="text-sm text-red-500">
+                                {errors.root?.message}
+                            </p>
+                        )}
+                    </form>
+                </div>
+                <div className="hidden md:block md:w-1/2 p-10">
+                    <img alt="Welcome illustration" src={login} />
+                </div>
+            </div>
+        </section>
     );
 };
 
