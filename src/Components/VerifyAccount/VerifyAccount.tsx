@@ -1,11 +1,11 @@
 import { useEffect, useReducer, useState } from 'react';
-import './VerifyAccount.css';
 import Button from '../Button/Button';
 import type { VerifyFormInputs } from '../../Models/User';
 import { resendVerificationCode, verify } from '../../Services/AuthServices';
 import Swal from 'sweetalert2';
 import type { SweetAlertResult } from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import email from '../../../src/assets/email.svg';
 
 const VerifyAccount = () => {
     const [emailToVerify, setEmailToVerify] = useState('');
@@ -135,36 +135,51 @@ const VerifyAccount = () => {
         }
     };
     return (
-        <div>
-            <div>
-                <h1>Verify your account</h1>
-                <p>
-                    We send you the six digit code to{' '}
-                    <strong>{emailToVerify}</strong>
-                </p>
-                <p>Enter the code below to confirm your email address</p>
+        <div className="min-h-screen flex items-center justify-center bg-blue-200">
+            <div className="flex flex-col items-center justify-center w-full max-w-2xl bg-white shadow-lg rounded-xl p-10">
+                <div>
+                    <img className="w-16 h-16" alt="Mailbox" src={email} />
+                </div>
+                <div>
+                    <h1 className="text-2xl font-bold text-center mt-5 mb-8">
+                        Verify your account
+                    </h1>
+                    <p className="text-center mb-4">
+                        Please enter the six digit code send to{' '}
+                        <strong>{emailToVerify}</strong>
+                    </p>
+                </div>
+                <div className="flex items-center justify-center mt-5 mb-8">
+                    {otp.map((data, i) => {
+                        return (
+                            <input
+                                className="w-12 outline-0 text-center bg-gray-100 border border-black rounded-xl p-2 mr-2"
+                                key={i}
+                                name={`otp-${i}`}
+                                type="text"
+                                value={data}
+                                maxLength={1}
+                                placeholder="_"
+                                onChange={(e) => handleChange(e, i)}
+                            />
+                        );
+                    })}
+                </div>
+                <div className="flex flex-col justify-center items-center gap-4">
+                    <Button
+                        className="px-2 sm:text-sm"
+                        onClick={onVerify}
+                        label="Verify email"
+                        variant="success"
+                    />
+                    <Button
+                        className="px-2 sm:text-sm"
+                        onClick={handleResendCode}
+                        label="Resend verification code"
+                        variant="warning"
+                    />
+                </div>
             </div>
-            <div className="otp-area">
-                {otp.map((data, i) => {
-                    return (
-                        <input
-                            key={i}
-                            name={`otp-${i}`}
-                            type="text"
-                            value={data}
-                            maxLength={1}
-                            placeholder="_"
-                            onChange={(e) => handleChange(e, i)}
-                        />
-                    );
-                })}
-            </div>
-            <Button onClick={onVerify} label="Verify email" variant="success" />
-            <Button
-                onClick={handleResendCode}
-                label="Resend verification code"
-                variant="warning"
-            />
         </div>
     );
 };

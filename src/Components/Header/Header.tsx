@@ -1,7 +1,7 @@
 import { UseAuth } from '../../Context/UseAuth';
 import { Link } from 'react-router-dom';
 import Button from '../Button/Button';
-import './Header.css';
+
 const Header = () => {
     const { logout, isLoggedIn } = UseAuth();
     const handleLogout = async () => {
@@ -10,13 +10,13 @@ const Header = () => {
     const loggedIn = isLoggedIn();
 
     return (
-        <header className="header">
-            <div className="header-left">
-                <Link className="custom-link" to="/Pick-Save">
+        <header className="flex justify-between items-center h-20 bg-purple-500 border-b-2">
+            <div className="ml-14">
+                <Link className="text-3xl font-bold text-white" to="/Pick-Save">
                     Pick&Save
                 </Link>
             </div>
-            <nav className="header-right">
+            <nav className="flex gap-2.5 mr-5">
                 {!loggedIn ? (
                     <></>
                 ) : (
