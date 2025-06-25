@@ -135,8 +135,8 @@ const VerifyAccount = () => {
         }
     };
     return (
-        <div className="min-h-screen flex items-center justify-center bg-blue-200">
-            <div className="flex flex-col items-center justify-center w-full max-w-2xl bg-white shadow-lg rounded-xl p-10">
+        <div className="min-h-screen flex items-center justify-center bg-white">
+            <div className="flex flex-col items-center justify-center w-full max-w-2xl bg-gray-100 shadow-lg rounded-xl p-10">
                 <div>
                     <img className="w-16 h-16" alt="Mailbox" src={email} />
                 </div>
