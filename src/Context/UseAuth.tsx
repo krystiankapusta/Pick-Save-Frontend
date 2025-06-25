@@ -50,7 +50,7 @@ export const UserProvider = ({ children }: Props) => {
 
             setToken(token);
             setUser(userObject);
-            navigate(`/`);
+            navigate(`/main`);
         } catch (error: any) {
             console.error('Login error at loginUser function: ', error.message);
             console.error('Login code at loginUser function: ', error.code);

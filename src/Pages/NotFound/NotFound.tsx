@@ -7,7 +7,7 @@ const NotFound = () => {
         navigate(`/`);
     };
     return (
-        <div className="min-h-screen flex justify-center items-center w-full bg-blue-200">
+        <div className="min-h-screen flex justify-center items-center w-full bg-white">
             <div className="flex  shadow-lg rounded-xl bg-gray-100 p-6">
                 <div className="flex flex-col justify-center items-center p-6 gap-5">
                     <h1 className="text-7xl font-bold  mb-6">404</h1>
