@@ -7,11 +7,11 @@ const NotFound = () => {
         navigate(`/`);
     };
     return (
-        <div className="min-h-screen flex justify-center items-center w-full bg-white">
-            <div className="flex  shadow-lg rounded-xl bg-gray-100 p-6">
+        <div className="min-h-screen flex justify-center items-center w-full bg-white dark:bg-zinc-800">
+            <div className="flex  shadow-lg rounded-xl bg-gray-100 dark:bg-zinc-500 p-6">
                 <div className="flex flex-col justify-center items-center p-6 gap-5">
-                    <h1 className="text-7xl font-bold  mb-6">404</h1>
-                    <h2 className="text-2xl text-gray-500 font-bold mb-2">
+                    <h1 className="text-8xl font-bold  mb-6">404</h1>
+                    <h2 className="text-2xl text-gray-400 dark:text-gray-300 font-bold mb-2">
                         Page Not Found
                     </h2>
                     <p className="">

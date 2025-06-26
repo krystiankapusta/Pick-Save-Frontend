@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import type { SweetAlertResult } from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import email from '../../../src/assets/email.svg';
+import { getAlertColors } from '../../Utils/GetAlertColors';
 
 const VerifyAccount = () => {
     const [emailToVerify, setEmailToVerify] = useState('');
@@ -50,6 +51,8 @@ const VerifyAccount = () => {
         try {
             const response = await verify(data);
             console.log('Verify response: ', response);
+            const { backgroundColor, textColor } = getAlertColors();
+
             const result: SweetAlertResult = await Swal.fire({
                 title: 'Success!',
                 text: 'Your account has been verified.',
@@ -60,7 +63,9 @@ const VerifyAccount = () => {
                 hideClass: {
                     popup: 'animate__animated animate__fadeOutDown animate__faster',
                 },
-                timer: 1500,
+                color: textColor,
+                timer: 2000,
+                background: backgroundColor,
                 timerProgressBar: true,
                 showConfirmButton: false,
             });
@@ -72,6 +77,7 @@ const VerifyAccount = () => {
         } catch (error: any) {
             console.error('onVerify verify error: ', error.fieldErrors);
             console.error('onVerify verify error: ', error.message);
+            const { backgroundColor, textColor } = getAlertColors();
 
             const errorMessage =
                 error.fieldErrors?.verificationCode ||
@@ -90,6 +96,8 @@ const VerifyAccount = () => {
                     popup: 'animate__animated animate__fadeOutDown animate__faster',
                 },
                 timer: 2000,
+                color: textColor,
+                background: backgroundColor,
                 timerProgressBar: true,
                 showConfirmButton: false,
             });
@@ -110,24 +118,33 @@ const VerifyAccount = () => {
     const handleResendCode = async () => {
         if (!emailToVerify) return;
         try {
+            console.log('Resend code sent');
             const response = await resendVerificationCode(emailToVerify);
             console.log('Resend code response: ', response);
+            const { backgroundColor, textColor } = getAlertColors();
+
             await Swal.fire({
                 icon: 'success',
                 title: 'Verification Code Sent',
-                text: response?.message || 'Please check your mailbox.',
-                timer: 1500,
+                text: 'Please check your mailbox.',
+                timer: 2000,
+                color: textColor,
+                background: backgroundColor,
                 timerProgressBar: true,
                 showConfirmButton: false,
             });
         } catch (error: any) {
             console.error('Resend verification code error: ', error);
             const errorResendCode = error.response?.data;
+            const { backgroundColor, textColor } = getAlertColors();
+
             await Swal.fire({
                 icon: 'error',
                 title: 'Failed to resend',
                 text: errorResendCode,
                 timer: 2000,
+                color: textColor,
+                background: backgroundColor,
                 timerProgressBar: true,
                 showConfirmButton: false,
             });
@@ -135,16 +152,16 @@ const VerifyAccount = () => {
         }
     };
     return (
-        <div className="min-h-screen flex items-center justify-center bg-white">
-            <div className="flex flex-col items-center justify-center w-full max-w-2xl bg-gray-100 shadow-lg rounded-xl p-10">
+        <div className="min-h-screen flex items-center justify-center bg-white dark:bg-zinc-800">
+            <div className="flex flex-col items-center justify-center w-full max-w-2xl bg-gray-100 dark:bg-zinc-700 shadow-lg rounded-xl p-10">
                 <div>
                     <img className="w-16 h-16" alt="Mailbox" src={email} />
                 </div>
                 <div>
-                    <h1 className="text-2xl font-bold text-center mt-5 mb-8">
+                    <h1 className="text-5xl text-zinc-950 font-bold text-center mt-5 mb-8">
                         Verify your account
                     </h1>
-                    <p className="text-center mb-4">
+                    <p className="text-center dark:text-white mb-4">
                         Please enter the six digit code send to{' '}
                         <strong>{emailToVerify}</strong>
                     </p>
