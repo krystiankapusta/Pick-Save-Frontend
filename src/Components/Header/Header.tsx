@@ -1,6 +1,7 @@
 import { UseAuth } from '../../Context/UseAuth';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../Button/Button';
+import ThemeToggle from '../ThemeToggle/ThemeToggle';
 
 const Header = () => {
     const { logout, isLoggedIn } = UseAuth();
@@ -17,9 +18,12 @@ const Header = () => {
     const loggedIn = isLoggedIn();
 
     return (
-        <header className="flex justify-between items-center h-16 bg-white border-b-2 sticky top-0">
+        <header className="flex justify-between items-center h-16 bg-white dark:bg-zinc-800 border-b-2 sticky top-0">
             <div className="ml-14">
-                <Link className="text-3xl font-bold text-black" to="/">
+                <Link
+                    className="text-3xl font-bold text-black dark:text-white"
+                    to="/"
+                >
                     Pick&Save
                 </Link>
             </div>
@@ -46,6 +50,9 @@ const Header = () => {
                         />
                     </>
                 )}
+                <div>
+                    <ThemeToggle />
+                </div>
             </nav>
         </header>
     );
