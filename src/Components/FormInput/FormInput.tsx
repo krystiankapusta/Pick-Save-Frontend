@@ -31,7 +31,7 @@ export const FormInput: React.FC<InputProps> = ({
 
     return (
         <div>
-            <label htmlFor={name}>
+            <label className="dark:text-white" htmlFor={name}>
                 {label}
                 {required && <span className="text-red-500"> * </span>}
             </label>
@@ -54,7 +54,7 @@ export const FormInput: React.FC<InputProps> = ({
                     <button
                         type="button"
                         onClick={handleTogglePassword}
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-zinc-900"
                         aria-label={
                             showPassword ? 'Hide password' : 'Show password'
                         }

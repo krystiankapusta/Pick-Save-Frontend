@@ -1,6 +1,6 @@
 const MainPage = () => {
     return (
-        <div>
+        <div className="bg-white dark:bg-gray-200">
             <h2>Main Page</h2>
         </div>
     );

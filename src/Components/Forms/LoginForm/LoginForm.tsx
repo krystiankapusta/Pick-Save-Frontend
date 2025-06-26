@@ -4,7 +4,7 @@ import type { LoginFormInputs } from '../../../Models/User';
 import Button from '../../Button/Button';
 import { UseAuth } from '../../../Context/UseAuth';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import login from '../../../assets/login.svg';
 
@@ -75,11 +75,11 @@ const LoginForm = () => {
     };
 
     return (
-        <section className="min-h-screen flex items-center justify-center bg-white">
-            <div className="flex items-center justify-center w-full max-w-6xl bg-gray-100 shadow-lg rounded-xl p-0 md:flex">
+        <section className="min-h-screen flex items-center justify-center bg-white dark:bg-zinc-800">
+            <div className="flex items-center justify-center w-full max-w-6xl bg-gray-100 dark:bg-zinc-700 shadow-lg rounded-xl p-0 md:flex">
                 <div className="w-full md:w-1/2 p-10">
                     <div className="mb-8 text-center">
-                        <h2 className="text-gray-500 text-4xl font-bold -mt-4 mb-12">
+                        <h2 className="text-gray-500 text-4xl dark:text-gray-100 font-bold -mt-4 mb-12">
                             Login
                         </h2>
                     </div>
@@ -89,7 +89,7 @@ const LoginForm = () => {
                         className="space-y-6 "
                     >
                         <FormInput
-                            className="w-full text-left text-sm border border-gray-400 rounded-md p-2 my-1"
+                            className="w-full text-left text-sm dark:bg-gray-300 border border-gray-400 rounded-md p-2 my-1"
                             label="Email"
                             type="email"
                             name="email"
@@ -107,7 +107,7 @@ const LoginForm = () => {
                         />
 
                         <FormInput
-                            className="w-full text-left text-sm border border-gray-400 rounded-md p-2 my-1"
+                            className="w-full text-left text-sm dark:bg-gray-300 border border-gray-400 rounded-md p-2 my-1"
                             label="Password"
                             type="password"
                             name="password"
@@ -140,6 +140,17 @@ const LoginForm = () => {
                                 {errors.root?.message}
                             </p>
                         )}
+                        <div className="flex items-center justify-center">
+                            <h3 className="dark:text-white mr-2">
+                                Don't have an account?
+                            </h3>
+                            <Link
+                                to="/auth/signup"
+                                className="font-bold text-blue-500"
+                            >
+                                Register here
+                            </Link>
+                        </div>
                     </form>
                 </div>
                 <div className="hidden md:block md:w-1/2 p-10">

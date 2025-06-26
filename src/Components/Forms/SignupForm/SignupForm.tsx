@@ -51,11 +51,11 @@ const SignupForm = () => {
     };
 
     return (
-        <section className="min-h-screen flex items-center justify-center bg-white">
-            <div className="flex items-center justify-center w-full max-w-6xl bg-gray-100 shadow-lg rounded-xl p-0 md:flex">
+        <section className="min-h-screen flex items-center justify-center bg-white dark:bg-zinc-800">
+            <div className="flex items-center justify-center w-full max-w-6xl bg-gray-100 dark:bg-zinc-700 shadow-lg rounded-xl p-0 md:flex">
                 <div className="w-full md:w-1/2 p-10">
                     <div className="mb-8 text-center">
-                        <h2 className="text-gray-500 text-4xl font-bold -mt-4 mb-12">
+                        <h2 className="text-gray-500 dark:text-gray-100 text-4xl font-bold -mt-4 mb-12">
                             Signup
                         </h2>
                     </div>
@@ -66,7 +66,7 @@ const SignupForm = () => {
                     >
                         <div>
                             <FormInput
-                                className="w-full text-left text-sm border border-gray-400 rounded-md p-2 my-1"
+                                className="w-full text-left text-sm dark:bg-gray-300 border border-gray-400 rounded-md p-2 my-1"
                                 label="Username"
                                 type="text"
                                 name="username"
@@ -85,7 +85,7 @@ const SignupForm = () => {
                             />
 
                             <FormInput
-                                className="w-full text-left text-sm border border-gray-400 rounded-md p-2 my-1"
+                                className="w-full text-left text-sm dark:bg-gray-300 border border-gray-400 rounded-md p-2 my-1"
                                 label="Email"
                                 type="email"
                                 name="email"
@@ -103,7 +103,7 @@ const SignupForm = () => {
                             />
 
                             <FormInput
-                                className="w-full text-left text-sm border border-gray-400 rounded-md p-2 my-1"
+                                className="w-full text-left text-sm dark:bg-gray-300 border border-gray-400 rounded-md p-2 my-1"
                                 label="Password"
                                 type="password"
                                 name="password"

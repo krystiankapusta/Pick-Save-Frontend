@@ -10,7 +10,7 @@ const HomePage = () => {
     };
 
     return (
-        <section className="flex min-h-screen justify-center w-full bg-white-">
+        <section className="flex min-h-screen justify-center w-full bg-white dark:bg-zinc-800">
             <div className="flex flex-col items-center justify-center max-w-7xl gap-10 p-1">
                 <div className="flex w-full bg-blue-100 shadow-lg rounded-xl">
                     <div className="flex flex-col justify-center w-full md:w-1/2 p-10 gap-4">
