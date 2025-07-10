@@ -12,7 +12,7 @@ const HomePage = () => {
     return (
         <section className="flex min-h-screen justify-center w-full bg-white dark:bg-zinc-800">
             <div className="flex flex-col items-center justify-center max-w-7xl gap-10 p-1">
-                <div className="flex w-full bg-blue-100 shadow-lg rounded-xl">
+                <div className="flex w-full bg-blue-100 dark:bg-blue-200 shadow-lg rounded-xl">
                     <div className="flex flex-col justify-center w-full md:w-1/2 p-10 gap-4">
                         <h2 className="text-xl md:text-3xl lg:text-5xl font-bold">
                             Smarter Shopping. Bigger Savings.
@@ -37,7 +37,7 @@ const HomePage = () => {
                         />
                     </div>
                 </div>
-                <div className="flex w-full bg-red-100 shadow-lg rounded-xl">
+                <div className="flex w-full bg-red-100 dark:bg-red-200 shadow-lg rounded-xl">
                     <div className="flex flex-col justify-center w-full md:w-1/2 p-10 gap-4">
                         <h2 className="text-xl md:text-3xl lg:text-5xl font-bold">
                             The Grocery List That Plans Itself
