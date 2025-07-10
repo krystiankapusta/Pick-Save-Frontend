@@ -9,9 +9,6 @@ const Header = () => {
     const handleLoginNavigate = () => {
         navigate(`/auth/login`);
     };
-    const handleSignupNavigate = () => {
-        navigate(`/auth/signup`);
-    };
     const handleLogout = async () => {
         logout();
     };
@@ -20,12 +17,25 @@ const Header = () => {
     return (
         <header className="flex justify-between items-center h-16 bg-white dark:bg-zinc-800 border-b-2 sticky top-0">
             <div className="ml-14">
-                <Link
-                    className="text-3xl font-bold text-black dark:text-white"
-                    to="/"
-                >
-                    Pick&Save
-                </Link>
+                {!loggedIn ? (
+                    <>
+                        <Link
+                            className="text-3xl font-bold text-black dark:text-white"
+                            to="/"
+                        >
+                            Pick&Save
+                        </Link>
+                    </>
+                ) : (
+                    <>
+                        <Link
+                            className="text-3xl font-bold text-black dark:text-white"
+                            to="/main"
+                        >
+                            P&S
+                        </Link>
+                    </>
+                )}
             </div>
             <nav className="flex gap-2.5 mr-5 ">
                 {!loggedIn ? (
@@ -34,11 +44,6 @@ const Header = () => {
                             variant="tertiary"
                             label="Log in"
                             onClick={handleLoginNavigate}
-                        />
-                        <Button
-                            variant="tertiary"
-                            label="Sign up"
-                            onClick={handleSignupNavigate}
                         />
                     </>
                 ) : (

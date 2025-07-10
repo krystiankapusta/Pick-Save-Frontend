@@ -1,10 +1,16 @@
 import { useNavigate } from 'react-router-dom';
 import Button from '../../Components/Button/Button';
+import { UseAuth } from '../../Context/UseAuth';
 
 const NotFound = () => {
+    const { isLoggedIn } = UseAuth();
     const navigate = useNavigate();
-    const handleNavigation = () => {
+    const loggedIn = isLoggedIn();
+    const handleHomeNavigation = () => {
         navigate(`/`);
+    };
+    const handleMainNavigation = () => {
+        navigate(`/main`);
     };
     return (
         <div className="min-h-screen flex justify-center items-center w-full bg-white dark:bg-zinc-800">
@@ -19,11 +25,19 @@ const NotFound = () => {
                         been moved.
                     </p>
                     <div className="mt-3">
-                        <Button
-                            variant="primary"
-                            label="Back to Home"
-                            onClick={handleNavigation}
-                        />
+                        {!loggedIn ? (
+                            <Button
+                                variant="primary"
+                                label="Back to Home"
+                                onClick={handleHomeNavigation}
+                            />
+                        ) : (
+                            <Button
+                                variant="primary"
+                                label="Back to Main"
+                                onClick={handleMainNavigation}
+                            />
+                        )}
                     </div>
                 </div>
             </div>

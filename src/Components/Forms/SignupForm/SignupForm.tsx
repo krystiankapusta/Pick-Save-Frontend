@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import Button from '../../Button/Button';
 import { signupAPI } from '../../../Services/AuthServices';
 import type { SignupFormInputs } from '../../../Models/User';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import welcomeIllustration from '../../../assets/welcome.svg';
 
 const SignupForm = () => {
@@ -134,6 +134,17 @@ const SignupForm = () => {
                                 {errors.root?.message}
                             </p>
                         )}
+                        <div className="flex flex-col md:flex-row items-center justify-center ">
+                            <h3 className="dark:text-white mr-2">
+                                Already have an account?
+                            </h3>
+                            <Link
+                                to="/auth/login"
+                                className="font-bold text-blue-500"
+                            >
+                                Log in
+                            </Link>
+                        </div>
                     </form>
                 </div>
                 <div className="hidden md:block md:w-1/2 p-10">

@@ -140,7 +140,7 @@ const LoginForm = () => {
                                 {errors.root?.message}
                             </p>
                         )}
-                        <div className="flex items-center justify-center">
+                        <div className="flex flex-col md:flex-row items-center justify-center ">
                             <h3 className="dark:text-white mr-2">
                                 Don't have an account?
                             </h3>
