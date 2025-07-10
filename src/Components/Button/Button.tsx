@@ -10,6 +10,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
         | 'danger'
         | 'warning'
         | 'tertiary'
+        | 'logout'
         | 'disabled';
 }
 
@@ -21,6 +22,7 @@ const variantClasses: Record<ButtonProps['variant'], string> = {
     warning: 'bg-yellow-500 text-black hover:bg-yellow-600',
     tertiary:
         'bg-transparent text-blue-600 border border-blue-600 hover:bg-blue-50',
+    logout: 'text-red-400',
     disabled: 'bg-gray-300 text-gray-600 cursor-not-allowed',
 };
 
