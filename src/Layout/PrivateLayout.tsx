@@ -1,16 +1,18 @@
 import Sidebar from '../Components/Sidebar/Sidebar';
 import { SidebarItem } from '../Components/SidebarItem/SidebarItem';
 import { CirclePlus, House, ShoppingBasket } from 'lucide-react';
-type PrivateLayoutProps = {
-    children: React.ReactNode;
-};
+import { Outlet } from 'react-router-dom';
 
-const PrivateLayout = ({ children }: PrivateLayoutProps) => {
+const PrivateLayout = () => {
     return (
         <div className="flex min-h-screen">
             <Sidebar>
-                <SidebarItem icon={<House />} text="Home" />
-                <SidebarItem icon={<CirclePlus />} text="Add product" />
+                <SidebarItem icon={<House />} text="Home" to="/main" />
+                <SidebarItem
+                    icon={<CirclePlus />}
+                    text="Add product"
+                    to="/products/create"
+                />
                 <SidebarItem
                     icon={<ShoppingBasket />}
                     text="Products"
@@ -18,7 +20,7 @@ const PrivateLayout = ({ children }: PrivateLayoutProps) => {
                 />
             </Sidebar>
             <main className="flex-1 p-6 bg-gray-100 dark:bg-zinc-800">
-                {children}
+                <Outlet />
             </main>
         </div>
     );

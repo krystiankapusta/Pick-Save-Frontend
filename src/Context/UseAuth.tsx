@@ -44,9 +44,12 @@ export const UserProvider = ({ children }: Props) => {
 
             const decodedToken = JSON.parse(atob(token.split('.')[1]));
             const username = decodedToken.sub;
+            const role = decodedToken.role;
+            const authorities = decodedToken.authorities;
 
-            const userObject = { username };
+            const userObject = { username, role, authorities };
             localStorage.setItem('user', JSON.stringify(userObject));
+            console.log('Logged user details: ', userObject);
 
             setToken(token);
             setUser(userObject);

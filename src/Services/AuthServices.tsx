@@ -3,7 +3,7 @@ import type {
     SignupFormInputs,
     VerifyFormInputs,
 } from '../Models/User';
-import { auth_api } from '../API/AxiosConfig';
+import { auth_api } from '../API/AuthAxiosConfig';
 
 export const signupAPI = async (signupFormInputs: SignupFormInputs) => {
     try {

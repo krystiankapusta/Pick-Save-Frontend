@@ -30,8 +30,8 @@ export const FormInput: React.FC<InputProps> = ({
     };
 
     return (
-        <div>
-            <label className="dark:text-white" htmlFor={name}>
+        <div className="flex flex-col gap-1">
+            <label className="font-bold dark:text-white" htmlFor={name}>
                 {label}
                 {required && <span className="text-red-500"> * </span>}
             </label>
