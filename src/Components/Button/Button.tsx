@@ -2,7 +2,9 @@ import React from 'react';
 import clsx from 'clsx';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    label: string;
+    label?: string;
+    icon?: React.ReactNode; // SVG or icon component
+    iconPosition?: 'left' | 'right';
     variant:
         | 'primary'
         | 'secondary'
@@ -11,7 +13,8 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
         | 'warning'
         | 'tertiary'
         | 'logout'
-        | 'disabled';
+        | 'disabled'
+        | 'transparent';
 }
 
 const variantClasses: Record<ButtonProps['variant'], string> = {
@@ -24,26 +27,39 @@ const variantClasses: Record<ButtonProps['variant'], string> = {
         'bg-transparent text-blue-600 border border-blue-600 hover:bg-blue-50',
     logout: 'text-red-400',
     disabled: 'bg-gray-300 text-gray-600 cursor-not-allowed',
+    transparent: 'bg-transparent',
 };
 
 const Button: React.FC<ButtonProps> = ({
     label,
+    icon,
+    iconPosition = 'left',
     variant,
     disabled,
     className = '',
     ...rest
 }) => {
+    const isIconOnly = icon && !label;
+
     return (
         <button
             className={clsx(
-                'px-4 py-2 rounded-md transition duration-150 ease-in-out',
+                'flex items-center justify-center rounded-md transition duration-150 ease-in-out',
+                isIconOnly ? 'p-2' : 'px-4 py-2 gap-2',
                 variantClasses[variant],
                 className
             )}
             disabled={disabled || variant === 'disabled'}
+            aria-label={
+                isIconOnly
+                    ? (rest['aria-label'] as string) || 'Button'
+                    : undefined
+            }
             {...rest}
         >
-            {label}
+            {icon && iconPosition === 'left' && icon}
+            {label && <span>{label}</span>}
+            {icon && iconPosition === 'right' && icon}
         </button>
     );
 };

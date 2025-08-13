@@ -19,9 +19,9 @@ export default function Sidebar({ children }: { children: ReactNode }) {
     return (
         <>
             <aside
-                className={`h-screen bg-white shadow-md transition-all duration-300 ${expanded ? 'w-64' : 'w-20'}`}
+                className={`bg-white shadow-md transition-all duration-300 ${expanded ? 'w-64' : 'w-20'}`}
             >
-                <nav className="h-full flex flex-col bg-white border-r shadow-sm">
+                <nav className="flex flex-col h-full bg-white border-r shadow-sm">
                     <div
                         className={`flex items-center mt-4 ${expanded ? ' justify-around ' : 'justify-center'}`}
                     >
@@ -39,6 +39,9 @@ export default function Sidebar({ children }: { children: ReactNode }) {
                     </div>
                     <SidebarContext.Provider value={{ expanded }}>
                         <ul className="flex-1 p-3">{children}</ul>
+                    </SidebarContext.Provider>
+
+                    <div className="flex flex-col justify-center items-center border-t flex p-3">
                         <div className="flex justify-center items-center">
                             <Button
                                 variant="logout"
@@ -46,20 +49,32 @@ export default function Sidebar({ children }: { children: ReactNode }) {
                                 onClick={handleLogout}
                             />
                         </div>
-                    </SidebarContext.Provider>
 
-                    <div className="flex justify-center items-center border-t flex p-3">
-                        <UserRound />
                         <div
-                            className={`flex justify-between items-center overflow-hidden transition-all ${
+                            className={`flex w-full h-16 items-center overflow-hidden transition-all ${
                                 expanded ? 'w-52 ml-3' : 'w-0'
                             }`}
                         >
-                            <div className="leading-4">
-                                <h4>Username</h4>
-                                <span>E-mail</span>
+                            <div
+                                className={`flex  ${expanded ? 'w-1/6' : 'justify-center'}`}
+                            >
+                                <UserRound />
                             </div>
-                            <MoreVertical size={20} />
+
+                            <div
+                                className={`ml-3 transition-all duration-300 ${
+                                    expanded
+                                        ? 'opacity-100 w-full'
+                                        : 'opacity-0 w-0'
+                                }`}
+                            >
+                                <h4>Username</h4>
+                            </div>
+                            <div
+                                className={`flex  ${expanded ? 'justify-end w-1/6' : 'w-0'}`}
+                            >
+                                <MoreVertical size={20} />
+                            </div>
                         </div>
                     </div>
                 </nav>

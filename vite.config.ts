@@ -13,6 +13,11 @@ export default defineConfig(({ mode }) => {
                     changeOrigin: true,
                     rewrite: (path) => path.replace(/^\/api/, ''),
                 },
+                '/aki': {
+                    target: env.VITE_BACKEND_PRODUCT_URL,
+                    changeOrigin: true,
+                    rewrite: (path) => path.replace(/^\/aki/, ''),
+                },
             },
         },
     };

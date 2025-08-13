@@ -9,6 +9,7 @@ import ProtectedRoute from './ProtectedRoute/ProtectedRoute';
 import MainPage from './Pages/MainPage/MainPage';
 import PrivateLayout from './Layout/PrivateLayout';
 import PublicLayout from './Layout/PublicLayout';
+import AddProductPage from './Pages/AddProductPage/AddProductPage';
 
 function App() {
     return (
@@ -23,15 +24,19 @@ function App() {
                 </Route>
 
                 <Route
-                    path="/main"
                     element={
                         <ProtectedRoute>
-                            <PrivateLayout>
-                                <MainPage />
-                            </PrivateLayout>
+                            <PrivateLayout />
                         </ProtectedRoute>
                     }
-                />
+                >
+                    <Route path="/main" element={<MainPage />} />
+                    <Route
+                        path="/products/create"
+                        element={<AddProductPage />}
+                    />
+                    {/* You can add more protected routes here that need the sidebar */}
+                </Route>
             </Routes>
         </>
     );
