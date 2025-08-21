@@ -45,7 +45,7 @@ const Button: React.FC<ButtonProps> = ({
         <button
             className={clsx(
                 'flex items-center justify-center rounded-md transition duration-150 ease-in-out',
-                isIconOnly ? 'p-2' : 'px-4 py-2 gap-2',
+                isIconOnly ? 'p-1' : 'px-4 py-2 gap-2',
                 variantClasses[variant],
                 className
             )}

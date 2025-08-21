@@ -32,3 +32,14 @@ export type Prices = {
     createdAt: Date;
     updatedAt: Date;
 };
+
+export interface ProductCardProps {
+    id: number;
+    imageUrl?: string;
+    productName: string;
+    brand: string;
+    weightValue: number;
+    weightUnit: string;
+    onEdit?: (id: number) => void;
+    onDelete?: (id: number) => void;
+}
