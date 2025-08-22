@@ -1,4 +1,4 @@
-export type AddProductForm = {
+export type ProductForm = {
     productName: string;
     brand: string;
     weightValue: number;
@@ -17,7 +17,7 @@ export type AddProductForm = {
     approved: boolean;
 };
 
-export type Product = AddProductForm & {
+export type Product = ProductForm & {
     prices: Prices;
     approved: boolean;
     createdAt: Date;
