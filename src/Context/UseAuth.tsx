@@ -7,6 +7,7 @@ import React, { createContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { loginAPI } from '../Services/AuthServices';
+import Swal from 'sweetalert2';
 
 type Props = { children: React.ReactNode };
 
@@ -21,11 +22,21 @@ export const UserProvider = ({ children }: Props) => {
     useEffect(() => {
         const user = localStorage.getItem('user');
         const token = localStorage.getItem('token');
+        const tokenExpiry = localStorage.getItem('tokenExpiry');
 
-        if (user && token) {
+        if (user && token && tokenExpiry) {
             setUser(JSON.parse(user));
             setToken(token);
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+            const timeLeft = parseInt(tokenExpiry) - Date.now();
+            if (timeLeft > 0) {
+                setTimeout(() => {
+                    logout();
+                    alert('Session expired. You have been logged out.');
+                }, timeLeft);
+            } else {
+                logout();
+            }
         }
         setIsReady(true);
     }, []);
@@ -36,11 +47,14 @@ export const UserProvider = ({ children }: Props) => {
             console.log('Login response -> ', response);
             if (!response) throw new Error('No response from server');
 
-            const token = response?.token;
-            if (!token) throw new Error('Token not found in response');
+            const { expiredIn, token } = response;
+            if (!token || !expiredIn)
+                throw new Error('Token or expiration missing');
 
             localStorage.setItem('token', token);
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            const expiryTime = Date.now() + expiredIn;
+            localStorage.setItem('tokenExpiry', expiryTime.toString());
 
             const decodedToken = JSON.parse(atob(token.split('.')[1]));
             const username = decodedToken.sub;
@@ -53,6 +67,27 @@ export const UserProvider = ({ children }: Props) => {
 
             setToken(token);
             setUser(userObject);
+            setTimeout(() => {
+                localStorage.removeItem('tokenExpiry');
+                Swal.fire({
+                    title: 'Session expired. You have been logged out.',
+                    showClass: {
+                        popup: `
+                              animate__animated
+                              animate__fadeInUp
+                              animate__faster
+                        `,
+                    },
+                    hideClass: {
+                        popup: `
+                              animate__animated
+                              animate__fadeOutDown
+                              animate__faster
+                        `,
+                    },
+                });
+                logout();
+            }, expiredIn);
             navigate(`/main`);
         } catch (error: any) {
             console.error('Login error at loginUser function: ', error.message);
