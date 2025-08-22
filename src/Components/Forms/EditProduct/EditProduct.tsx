@@ -1,13 +1,16 @@
-import type { ProductForm, Prices } from '../../../Models/Product';
-import { useForm, useFieldArray } from 'react-hook-form';
-import FormInput from '../../FormInput/FormInput';
+import { useEffect } from 'react';
+import { editProduct, getProductById } from '../../../Services/ProductService';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useFieldArray, useForm } from 'react-hook-form';
+import type { Prices, ProductForm } from '../../../Models/Product';
 import Button from '../../Button/Button';
-import { useNavigate } from 'react-router-dom';
-import { createProduct } from '../../../Services/ProductService';
-import add_information from '../../../assets/add_information.svg';
+import FormInput from '../../FormInput/FormInput';
 import addIcon from '../../../assets/addIcon.svg';
 import { FormTextarea } from '../../FormTextArea/FormTextArea';
-const AddProduct = () => {
+import update_information from '../../../assets/update_information.svg';
+
+const EditProduct = () => {
+    const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     const isAdmin = user.role === 'ADMIN';
@@ -17,16 +20,61 @@ const AddProduct = () => {
         control,
         handleSubmit,
         setError,
+        reset,
         formState: { errors },
-        watch,
-    } = useForm<ProductForm>();
+    } = useForm<ProductForm>({
+        defaultValues: {
+            productName: '',
+            brand: '',
+            weightValue: 1,
+            weightUnit: '',
+            categories: [{ categoryName: '' }],
+            prices: [],
+            imageUrl: '',
+            description: '',
+            country: '',
+            productionPlace: '',
+            approved: false,
+        },
+    });
 
     const { fields, append, remove } = useFieldArray({
         control,
         name: 'prices',
     });
 
-    const watchApproved = watch('approved', false);
+    useEffect(() => {
+        const fetchProduct = async () => {
+            if (!id) return;
+            try {
+                const product = await getProductById(Number(id));
+                reset({
+                    productName: product.productName,
+                    brand: product.brand,
+                    weightValue: product.weightValue,
+                    weightUnit: product.weightUnit,
+                    categories: product.categories
+                        .map((c: { categoryName: string }) => c.categoryName)
+                        .join(', '),
+                    prices: product.prices.map((p: Prices) => ({
+                        amount: p.amount,
+                        currency: p.currency,
+                        shop: p.shop,
+                    })),
+                    imageUrl: product.imageUrl || '',
+                    description: product.description || '',
+                    country: product.country || '',
+                    productionPlace: product.productionPlace || '',
+                    approved: isAdmin ? product.approved : false,
+                });
+            } catch (error) {
+                console.error('Failed to fetch product data: ', error);
+                navigate('/products/display-all');
+            }
+        };
+        fetchProduct();
+    }, [id, reset, navigate, isAdmin]);
+
     const onSubmit = async (data: any) => {
         if (!data.prices || data.prices.length === 0) {
             setError('root', {
@@ -52,10 +100,6 @@ const AddProduct = () => {
             return;
         }
         try {
-            console.log(
-                'On submit function before send request to create product'
-            );
-
             const productPayload: ProductForm = {
                 productName: data.productName,
                 brand: data.brand,
@@ -64,75 +108,53 @@ const AddProduct = () => {
                 categories: data.categories
                     .split(', ')
                     .map((name: string) => ({ categoryName: name.trim() })),
-                prices: data.prices.map(
-                    (price: {
-                        amount: string;
-                        currency: string;
-                        shop: string;
-                    }) => ({
-                        amount: parseFloat(price.amount),
-                        currency: price.currency,
-                        shop: price.shop,
-                        approved: isAdmin ? data.approved : false,
-                    })
-                ),
+                prices: data.prices.map((price: Prices) => ({
+                    amount: parseFloat(price.amount as any),
+                    currency: price.currency,
+                    shop: price.shop,
+                    approved: isAdmin ? data.approved : false,
+                })),
                 imageUrl: data.imageUrl || '',
                 description: data.description || '',
                 country: data.country || '',
                 productionPlace: data.productionPlace || '',
                 approved: isAdmin ? data.approved : false,
             };
+            console.log('Payload to update: ', productPayload);
 
-            const response = await createProduct(productPayload);
-            console.log(
-                'On submit function response during creating product: ',
-                response
-            );
-            navigate('/main');
+            await editProduct(productPayload, Number(id));
+            navigate('/products/display-all');
         } catch (error: any) {
-            console.error('Failed to add product at onSubmit function', error);
-            const errorMessage = error.message;
-            console.error('Error message: ', errorMessage);
+            console.error('Failed to update product', error);
             setError('root', {
                 type: 'server',
                 message:
-                    errorMessage || 'Product create failed. Please try again.',
+                    error.message || 'Product update failed. Please try again.',
             });
         }
     };
 
-    const handleNavigation = (path: string) => {
-        navigate(path);
-    };
     return (
         <section className="flex flex-col items-center justify-center bg-gray-100 dark:bg-zinc-800">
             <div className="hidden md:block md:w-1/4 p-6">
-                <img alt="Add information" src={add_information} />
+                <img alt="Update information" src={update_information} />
             </div>
             <div className="flex flex-col justify-center items-center w-full bg-gray-200 shadow-lg rounded-xl p-5">
                 <form
                     onSubmit={handleSubmit(onSubmit)}
                     className="w-1/2 space-y-6 p-2 gap-1"
                 >
-                    {!isAdmin && (
-                        <p className="text-sm text-gray-600 mt-2">
-                            Status:{' '}
-                            {watchApproved
-                                ? 'Verified by admin'
-                                : 'Not verified yet'}
-                        </p>
-                    )}
+                    <h2 className="text-xl font-bold mb-4">Edit Product</h2>
                     <FormInput
                         className="w-full text-sm border border-gray-400 rounded-md p-1"
                         label="Product name"
                         type="text"
                         name="productName"
-                        placeholder="Enter product name"
                         register={register}
                         registerOptions={{
                             required: 'Product name is required',
                             pattern: {
-                                value: /^[a-zA-Z0-9_]{3,30}$/,
+                                value: /^[\p{L}0-9 _-]{3,30}$/u,
                                 message:
                                     'Product name must be 3-30 characters long',
                             },
@@ -145,12 +167,11 @@ const AddProduct = () => {
                         label="Brand"
                         type="text"
                         name="brand"
-                        placeholder="Enter brand"
                         register={register}
                         registerOptions={{
                             required: 'Brand name is required',
                             pattern: {
-                                value: /^[a-zA-Z0-9_]{3,30}$/,
+                                value: /^[\p{L}0-9 _-]{3,50}$/u,
                                 message: 'Brand must be 3-30 characters long',
                             },
                         }}
@@ -198,7 +219,6 @@ const AddProduct = () => {
                             </p>
                         }
                     </div>
-
                     <FormInput
                         className="w-full text-sm border border-gray-400 rounded-md p-1"
                         label="Categories"
@@ -209,7 +229,7 @@ const AddProduct = () => {
                         registerOptions={{
                             required: 'Category is required',
                             pattern: {
-                                value: /^[a-zA-Z,\s]{3,}$/,
+                                value: /^[\p{L}0-9 ,.-]{3,}$/u,
                                 message:
                                     'Category name must be at least 3 characters long',
                             },
@@ -217,6 +237,7 @@ const AddProduct = () => {
                         error={errors.categories?.message}
                         required
                     />
+
                     <div>
                         {fields.map((field, index) => (
                             <div key={field.id} className="border mb-2 rounded">
@@ -279,7 +300,7 @@ const AddProduct = () => {
                                     registerOptions={{
                                         required: 'Shop is required',
                                         pattern: {
-                                            value: /^[a-zA-Z0-9]{3,20}$/,
+                                            value: /^[\p{L}0-9 _-]{3,20}$/u,
                                             message:
                                                 'Shop name must be 3 - 20 characters long',
                                         },
@@ -354,7 +375,7 @@ const AddProduct = () => {
                         register={register}
                         registerOptions={{
                             pattern: {
-                                value: /^[a-zA-Z]{3,}$/,
+                                value: /^[\p{L}0-9 ,.-]{3,}$/u,
                                 message:
                                     'Country name must be at least 3 characters long',
                             },
@@ -370,7 +391,7 @@ const AddProduct = () => {
                         register={register}
                         registerOptions={{
                             pattern: {
-                                value: /^[a-zA-Z]{3,}$/,
+                                value: /^[\p{L}0-9 ,.-]{3,}$/u,
                                 message:
                                     'Production place name must be at least 3 characters long',
                             },
@@ -382,15 +403,16 @@ const AddProduct = () => {
                         <Button
                             type="submit"
                             variant="success"
-                            label="Create"
+                            label="Save Changes"
                         />
                         <Button
                             type="button"
                             variant="secondary"
                             label="Cancel"
-                            onClick={() => handleNavigation(`/main`)}
+                            onClick={() => navigate('/products/display-all')}
                         />
                     </div>
+
                     {errors.root?.message && (
                         <p className="text-red-500 text-sm mb-4">
                             {errors.root.message}
@@ -402,4 +424,4 @@ const AddProduct = () => {
     );
 };
 
-export default AddProduct;
+export default EditProduct;

@@ -4,13 +4,16 @@ import type { ProductCardProps } from '../../Models/Product';
 import { deleteProduct, displayProducts } from '../../Services/ProductService';
 import Swal from 'sweetalert2';
 import type { SweetAlertResult } from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 const ProductsPage: React.FC = () => {
     const [products, setProducts] = useState<ProductCardProps[]>([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const data = await displayProducts();
+                console.log('displayProducts returned:', data);
                 setProducts(data);
             } catch (error) {
                 console.error('Failed to fetch products data: ', error);
@@ -18,9 +21,6 @@ const ProductsPage: React.FC = () => {
         };
         fetchData();
     }, []);
-    const handleEdit = (id: number) => {
-        console.log('Edit product:', id);
-    };
 
     const handleDeleteProduct = async (productId: number) => {
         console.log('Delete product with id:', productId);
@@ -65,7 +65,7 @@ const ProductsPage: React.FC = () => {
                     <ProductCard
                         key={p.id}
                         {...p}
-                        onEdit={handleEdit}
+                        onEdit={() => navigate(`/products/edit/${p.id}`)}
                         onDelete={() => handleDeleteProduct(p.id)}
                     />
                 ))}

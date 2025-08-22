@@ -11,6 +11,7 @@ import PrivateLayout from './Layout/PrivateLayout';
 import PublicLayout from './Layout/PublicLayout';
 import AddProductPage from './Pages/AddProductPage/AddProductPage';
 import ProductsPage from './Pages/ProductsPage/ProductsPage';
+import EditProductPage from './Pages/EditProductPage/EditProductPage';
 
 function App() {
     return (
@@ -40,6 +41,11 @@ function App() {
                         path="/products/display-all"
                         element={<ProductsPage />}
                     />
+                    <Route
+                        path="/products/edit/:id"
+                        element={<EditProductPage />}
+                    />
+                    <Route path="/products/:id" />
                     {/* You can add more protected routes here that need the sidebar */}
                 </Route>
             </Routes>
