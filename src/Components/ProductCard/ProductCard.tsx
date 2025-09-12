@@ -17,13 +17,15 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     const isAdmin = user.role === 'ADMIN';
     return (
-        <div className="rounded shadow-md p-4 max-w-xs">
+        <div className="max-w-xs rounded shadow-md dark:shadow-gray-600 p-4 cursor-pointer transform transition duration-300 hover:scale-105">
             <img
                 src={imageUrl || empty_image}
                 alt={productName}
                 className={`w-full h-40 rounded ${imageUrl ? 'object-cover' : 'object-contain p-6 bg-gray-100'}`}
             />
-            <h3 className="mt-2 text-lg font-bold">{productName}</h3>
+            <h3 className="mt-2 text-lg font-bold dark:text-gray-300">
+                {productName}
+            </h3>
             <p className="text-gray-500">{brand}</p>
             <div className="flex font-bold">
                 <p className="text-gray-500">{weightValue}</p>

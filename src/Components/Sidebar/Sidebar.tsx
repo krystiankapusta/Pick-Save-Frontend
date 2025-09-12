@@ -19,9 +19,9 @@ export default function Sidebar({ children }: { children: ReactNode }) {
     return (
         <>
             <aside
-                className={`bg-white shadow-md transition-all duration-300 ${expanded ? 'w-64' : 'w-20'}`}
+                className={`bg-white dark:bg-zinc-800 shadow-md transition-all duration-300 ${expanded ? 'w-64' : 'w-20'}`}
             >
-                <nav className="flex flex-col h-full bg-white border-r shadow-sm">
+                <nav className="flex flex-col h-full bg-white dark:bg-zinc-800 border-r shadow-sm">
                     <div
                         className={`flex items-center mt-4 ${expanded ? ' justify-around ' : 'justify-center'}`}
                     >
@@ -32,7 +32,7 @@ export default function Sidebar({ children }: { children: ReactNode }) {
                         />{' '}
                         <button
                             onClick={() => setExpanded((curr) => !curr)}
-                            className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100"
+                            className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 dark:hover:bg-gray-400"
                         >
                             {expanded ? <ChevronFirst /> : <ChevronLast />}
                         </button>

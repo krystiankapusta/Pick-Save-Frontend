@@ -5,6 +5,7 @@ import { deleteProduct, displayProducts } from '../../Services/ProductService';
 import Swal from 'sweetalert2';
 import type { SweetAlertResult } from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import { getAlertColors } from '../../Utils/GetAlertColors';
 const ProductsPage: React.FC = () => {
     const [products, setProducts] = useState<ProductCardProps[]>([]);
     const navigate = useNavigate();
@@ -25,12 +26,13 @@ const ProductsPage: React.FC = () => {
     const handleDeleteProduct = async (productId: number) => {
         console.log('Delete product with id:', productId);
         try {
+            const { backgroundColor, textColor } = getAlertColors();
             const result: SweetAlertResult = await Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
                 icon: 'warning',
-                color: 'white',
-                background: '#2c2c2c',
+                color: textColor,
+                background: backgroundColor,
                 showCancelButton: true,
                 confirmButtonColor: '#0f9b0f',
                 cancelButtonColor: '#dd1818',
@@ -45,8 +47,8 @@ const ProductsPage: React.FC = () => {
                 title: 'Deleted!',
                 text: 'Product has been deleted.',
                 icon: 'success',
-                color: 'white',
-                background: '#2c2c2c',
+                color: textColor,
+                background: backgroundColor,
                 confirmButtonColor: '#0b8793',
             });
 
