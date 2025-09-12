@@ -79,7 +79,7 @@ const LoginForm = () => {
             <div className="flex items-center justify-center w-full max-w-6xl bg-gray-100 dark:bg-zinc-700 shadow-lg rounded-xl p-0 md:flex">
                 <div className="w-full md:w-1/2 p-10">
                     <div className="mb-8 text-center">
-                        <h2 className="text-gray-500 text-4xl dark:text-gray-100 font-bold -mt-4 mb-12">
+                        <h2 className="text-gray-500 dark:text-gray-100 text-4xl font-bold -mt-4 mb-12">
                             Login
                         </h2>
                     </div>

@@ -28,7 +28,7 @@ export function SidebarItem({
             ${expanded ? 'ml-3' : 'ml-1'} ${
                 active
                     ? 'bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800'
-                    : 'hover:bg-indigo-50 text-gray-600'
+                    : 'hover:bg-indigo-50 dark:hover:bg-zinc-700 text-gray-600 dark:text-zinc-300'
             }`}
         >
             {icon}
@@ -50,7 +50,7 @@ export function SidebarItem({
 
             {!expanded && (
                 <div
-                    className={`absolute left-full rounded-md px-2 py-1 ml-6 bg-indigo-100 text-indigo-800 text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0`}
+                    className={`absolute left-full rounded-md px-2 py-1 ml-6 bg-indigo-100 dark:bg-zinc-700 text-indigo-800 dark:text-zinc-300 text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0`}
                 >
                     {text}
                 </div>

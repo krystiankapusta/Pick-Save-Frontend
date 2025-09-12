@@ -139,14 +139,13 @@ const EditProduct = () => {
             <div className="hidden md:block md:w-1/4 p-6">
                 <img alt="Update information" src={update_information} />
             </div>
-            <div className="flex flex-col justify-center items-center w-full bg-gray-200 shadow-lg rounded-xl p-5">
+            <div className="flex flex-col justify-center items-center w-full bg-gray-200 dark:bg-zinc-700 shadow-lg rounded-xl p-5">
                 <form
                     onSubmit={handleSubmit(onSubmit)}
                     className="w-1/2 space-y-6 p-2 gap-1"
                 >
-                    <h2 className="text-xl font-bold mb-4">Edit Product</h2>
                     <FormInput
-                        className="w-full text-sm border border-gray-400 rounded-md p-1"
+                        className="w-full text-sm dark:bg-gray-300 border border-gray-400 rounded-md p-1"
                         label="Product name"
                         type="text"
                         name="productName"
@@ -163,7 +162,7 @@ const EditProduct = () => {
                         required
                     />
                     <FormInput
-                        className="w-full text-sm border border-gray-400 rounded-md p-1"
+                        className="w-full text-sm dark:bg-gray-300 border border-gray-400 rounded-md p-1"
                         label="Brand"
                         type="text"
                         name="brand"
@@ -179,7 +178,7 @@ const EditProduct = () => {
                         required
                     />
                     <FormInput
-                        className="w-full text-sm border border-gray-400 rounded-md p-1"
+                        className="w-full text-sm dark:bg-gray-300 border border-gray-400 rounded-md p-1"
                         label="Weight value"
                         type="text"
                         name="weightValue"
@@ -196,12 +195,15 @@ const EditProduct = () => {
                         required
                     />
                     <div className="form-group font-bold">
-                        <label htmlFor="Weight unit" className="font-bold mr-2">
+                        <label
+                            htmlFor="Weight unit"
+                            className="dark:text-white font-bold mr-2"
+                        >
                             Weight unit
                         </label>
                         <select
                             id="WeightUnit"
-                            className="form-control border border-gray-400 rounded-md p-0.5"
+                            className="form-control dark:text-gray-100 dark:bg-gray-500 border border-gray-400 rounded-md p-0.5"
                             {...register('weightUnit', {
                                 required: 'Weight unit is required',
                             })}
@@ -220,7 +222,7 @@ const EditProduct = () => {
                         }
                     </div>
                     <FormInput
-                        className="w-full text-sm border border-gray-400 rounded-md p-1"
+                        className="w-full text-sm dark:bg-gray-300 border border-gray-400 rounded-md p-1"
                         label="Categories"
                         type="text"
                         name="categories"
@@ -240,10 +242,10 @@ const EditProduct = () => {
 
                     <div>
                         {fields.map((field, index) => (
-                            <div key={field.id} className="border mb-2 rounded">
+                            <div key={field.id} className="mb-2 rounded">
                                 <div className="flex items-end">
                                     <FormInput
-                                        className="w-40 text-sm border border-gray-400 rounded-md p-1 mr-2"
+                                        className="w-40 text-sm dark:bg-gray-300 border border-gray-400 rounded-md p-1 mr-2"
                                         label={`Amount (Shop ${index + 1})`}
                                         name={`prices.${index}.amount`}
                                         placeholder="e.g. 2.99"
@@ -265,7 +267,7 @@ const EditProduct = () => {
                                     />
 
                                     <select
-                                        className="flex h-7 w-15 font-bold text-sm bg-transparent"
+                                        className="flex h-7 w-15 font-bold text-sm dark:text-gray-100 bg-transparent"
                                         {...register(
                                             `prices.${index}.currency`,
                                             {
@@ -292,7 +294,7 @@ const EditProduct = () => {
                                 </div>
 
                                 <FormInput
-                                    className="w-full text-sm border border-gray-400 rounded-md p-1"
+                                    className="w-full text-sm dark:bg-gray-300 border border-gray-400 rounded-md p-1"
                                     label="Shop"
                                     type="text"
                                     name={`prices.${index}.shop`}
@@ -324,7 +326,11 @@ const EditProduct = () => {
                         <Button
                             type="button"
                             icon={
-                                <img src={addIcon} alt="" className="w-9 h-9" />
+                                <img
+                                    src={addIcon}
+                                    alt=""
+                                    className="w-9 h-9 dark:invert dark:brightness-50"
+                                />
                             }
                             variant="transparent"
                             onClick={() =>
@@ -337,7 +343,7 @@ const EditProduct = () => {
                         />
                     </div>
                     <FormInput
-                        className="w-full text-sm border border-gray-400 rounded-md p-1"
+                        className="w-full text-sm dark:bg-gray-300 border border-gray-400 rounded-md p-1"
                         label="Image URL"
                         type="text"
                         name="imageUrl"
@@ -352,7 +358,7 @@ const EditProduct = () => {
                         error={errors.imageUrl?.message}
                     />
                     <FormTextarea
-                        className="w-full text-sm border border-gray-400 rounded-md p-1"
+                        className="w-full text-sm dark:bg-gray-300 border border-gray-400 rounded-md p-1"
                         label="Description"
                         name="description"
                         placeholder="Enter description"
@@ -367,7 +373,7 @@ const EditProduct = () => {
                         error={errors.description?.message}
                     />
                     <FormInput
-                        className="w-full text-sm border border-gray-400 rounded-md p-1"
+                        className="w-full text-sm dark:bg-gray-300 border border-gray-400 rounded-md p-1"
                         label="Country"
                         type="text"
                         name="country"
@@ -383,7 +389,7 @@ const EditProduct = () => {
                         error={errors.country?.message}
                     />
                     <FormInput
-                        className="w-full text-sm border border-gray-400 rounded-md p-1"
+                        className="w-full text-sm dark:bg-gray-300 border border-gray-400 rounded-md p-1"
                         label="Production place"
                         type="text"
                         name="productionPlace"
