@@ -58,3 +58,15 @@ export const editProduct = async (product: ProductForm, id: number) => {
         throw error;
     }
 };
+
+export const verifyProduct = async (id: number | undefined) => {
+    try {
+        const response = await product_api.put<Product>(
+            `/products/verify/${id}`
+        );
+        return response.data;
+    } catch (error: any) {
+        console.error('Product verification data error: ', error);
+        throw error;
+    }
+};

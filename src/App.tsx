@@ -45,6 +45,7 @@ function App() {
                         path="/products/edit/:id"
                         element={<EditProductPage />}
                     />
+
                     <Route path="/products/:id" />
                     {/* You can add more protected routes here that need the sidebar */}
                 </Route>

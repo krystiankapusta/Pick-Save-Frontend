@@ -31,8 +31,26 @@ export const UserProvider = ({ children }: Props) => {
             const timeLeft = parseInt(tokenExpiry) - Date.now();
             if (timeLeft > 0) {
                 setTimeout(() => {
+                    localStorage.removeItem('tokenExpiry');
+                    Swal.fire({
+                        title: 'Session expired. You have been logged out.',
+                        showClass: {
+                            popup: `
+                              animate__animated
+                              animate__fadeInUp
+                              animate__faster
+                        `,
+                        },
+                        hideClass: {
+                            popup: `
+                              animate__animated
+                              animate__fadeOutDown
+                              animate__faster
+                        `,
+                        },
+                        timer: 1500,
+                    });
                     logout();
-                    alert('Session expired. You have been logged out.');
                 }, timeLeft);
             } else {
                 logout();
@@ -85,6 +103,7 @@ export const UserProvider = ({ children }: Props) => {
                               animate__faster
                         `,
                     },
+                    timer: 1500,
                 });
                 logout();
             }, expiredIn);

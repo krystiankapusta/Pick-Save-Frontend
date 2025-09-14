@@ -345,16 +345,10 @@ const EditProduct = () => {
                     <FormInput
                         className="w-full text-sm dark:bg-gray-300 border border-gray-400 rounded-md p-1"
                         label="Image URL"
-                        type="text"
+                        type="url"
                         name="imageUrl"
                         placeholder="Enter image URL"
                         register={register}
-                        registerOptions={{
-                            pattern: {
-                                value: /^[a-zA-Z]{10,}$/,
-                                message: 'Incorrect URL address structure',
-                            },
-                        }}
                         error={errors.imageUrl?.message}
                     />
                     <FormTextarea

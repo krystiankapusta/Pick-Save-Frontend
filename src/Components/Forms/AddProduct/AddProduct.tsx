@@ -18,15 +18,12 @@ const AddProduct = () => {
         handleSubmit,
         setError,
         formState: { errors },
-        watch,
     } = useForm<ProductForm>();
 
     const { fields, append, remove } = useFieldArray({
         control,
         name: 'prices',
     });
-
-    const watchApproved = watch('approved', false);
     const onSubmit = async (data: any) => {
         if (!data.prices || data.prices.length === 0) {
             setError('root', {
@@ -114,14 +111,6 @@ const AddProduct = () => {
                     onSubmit={handleSubmit(onSubmit)}
                     className="w-1/2 space-y-6 p-2 gap-1"
                 >
-                    {!isAdmin && (
-                        <p className="text-sm text-gray-600 dark:text-gray-100 mt-2">
-                            Status:{' '}
-                            {watchApproved
-                                ? 'Verified by admin'
-                                : 'Not verified yet'}
-                        </p>
-                    )}
                     <FormInput
                         className="w-full text-sm dark:bg-gray-300 border border-gray-400 rounded-md p-1"
                         label="Product name"
@@ -325,16 +314,10 @@ const AddProduct = () => {
                     <FormInput
                         className="w-full text-sm dark:bg-gray-300 border border-gray-400 rounded-md p-1"
                         label="Image URL"
-                        type="text"
+                        type="url"
                         name="imageUrl"
                         placeholder="Enter image URL"
                         register={register}
-                        registerOptions={{
-                            pattern: {
-                                value: /^[a-zA-Z]{10,}$/,
-                                message: 'Incorrect URL address structure',
-                            },
-                        }}
                         error={errors.imageUrl?.message}
                     />
                     <FormTextarea
