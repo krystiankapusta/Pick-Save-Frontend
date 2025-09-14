@@ -40,6 +40,11 @@ export interface ProductCardProps {
     brand: string;
     weightValue: number;
     weightUnit: string;
+    approved: boolean;
+    prices: {
+        approved?: boolean;
+    }[];
     onEdit?: (id: number) => void;
     onDelete?: (id: number) => void;
+    onVerify?: (id: number) => void;
 }
