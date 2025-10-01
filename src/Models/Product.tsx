@@ -12,8 +12,27 @@ export type ProductForm = {
     }[];
     imageUrl?: string;
     description?: string;
-    country: string;
+    countries: string[];
     productionPlace: string;
+    approved: boolean;
+};
+
+export type ProductPayload = {
+    productName: string;
+    brand: string;
+    weightValue: number;
+    weightUnit: string;
+    categories: { categoryName: string }[];
+    prices: {
+        amount: number;
+        currency: string;
+        shop: string;
+        approved?: boolean;
+    }[];
+    imageUrl?: string;
+    description?: string;
+    productionPlace: string;
+    countries: string[];
     approved: boolean;
 };
 

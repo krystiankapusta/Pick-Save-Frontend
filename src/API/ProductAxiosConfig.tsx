@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 export const product_api = axios.create({
     baseURL: '/aki',
@@ -22,11 +21,10 @@ product_api.interceptors.response.use(
         return response;
     },
     (error) => {
-        const navigate = useNavigate();
         if (error.response?.status === 401) {
             console.warn('Unauthorized – redirecting to login');
             localStorage.removeItem('token');
-            navigate('/auth/login');
+            window.location.href = '/auth/login';
         }
         return Promise.reject(error);
     }

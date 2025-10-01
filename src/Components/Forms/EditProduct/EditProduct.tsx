@@ -2,7 +2,11 @@ import { useEffect } from 'react';
 import { editProduct, getProductById } from '../../../Services/ProductService';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useFieldArray, useForm } from 'react-hook-form';
-import type { Prices, ProductForm } from '../../../Models/Product';
+import type {
+    Prices,
+    ProductForm,
+    ProductPayload,
+} from '../../../Models/Product';
 import Button from '../../Button/Button';
 import FormInput from '../../FormInput/FormInput';
 import addIcon from '../../../assets/addIcon.svg';
@@ -28,11 +32,11 @@ const EditProduct = () => {
             brand: '',
             weightValue: 1,
             weightUnit: '',
-            categories: [{ categoryName: '' }],
+            categories: [],
             prices: [],
             imageUrl: '',
             description: '',
-            country: '',
+            countries: [],
             productionPlace: '',
             approved: false,
         },
@@ -63,7 +67,7 @@ const EditProduct = () => {
                     })),
                     imageUrl: product.imageUrl || '',
                     description: product.description || '',
-                    country: product.country || '',
+                    countries: product.countries.join(', ') || [],
                     productionPlace: product.productionPlace || '',
                     approved: isAdmin ? product.approved : false,
                 });
@@ -100,24 +104,24 @@ const EditProduct = () => {
             return;
         }
         try {
-            const productPayload: ProductForm = {
-                productName: data.productName,
-                brand: data.brand,
-                weightValue: data.weightValue,
-                weightUnit: data.weightUnit,
+            const productPayload: ProductPayload = {
+                ...data,
                 categories: data.categories
-                    .split(', ')
-                    .map((name: string) => ({ categoryName: name.trim() })),
+                    .split(',')
+                    .map((name: string) => ({ categoryName: name.trim() }))
+                    .filter(
+                        (c: { categoryName: string }) =>
+                            c.categoryName.length > 0
+                    ),
                 prices: data.prices.map((price: Prices) => ({
+                    ...price,
                     amount: parseFloat(price.amount as any),
-                    currency: price.currency,
-                    shop: price.shop,
                     approved: isAdmin ? data.approved : false,
                 })),
-                imageUrl: data.imageUrl || '',
-                description: data.description || '',
-                country: data.country || '',
-                productionPlace: data.productionPlace || '',
+                countries: data.countries
+                    .split(',')
+                    .map((c: string) => c.trim())
+                    .filter((c: string) => c.length > 0),
                 approved: isAdmin ? data.approved : false,
             };
             console.log('Payload to update: ', productPayload);
@@ -229,11 +233,10 @@ const EditProduct = () => {
                         placeholder="e.g. Protein, Fats"
                         register={register}
                         registerOptions={{
-                            required: 'Category is required',
+                            required: 'At least one category is required',
                             pattern: {
-                                value: /^[\p{L}0-9 ,.-]{3,}$/u,
-                                message:
-                                    'Category name must be at least 3 characters long',
+                                value: /^[\p{L} ]+(?:\s*,\s*[\p{L} ]+)*$/u,
+                                message: 'Enter at least one valid category',
                             },
                         }}
                         error={errors.categories?.message}
@@ -368,20 +371,22 @@ const EditProduct = () => {
                     />
                     <FormInput
                         className="w-full text-sm dark:bg-gray-300 border border-gray-400 rounded-md p-1"
-                        label="Country"
+                        label="Countries"
                         type="text"
-                        name="country"
-                        placeholder="Enter country"
+                        name="countries"
+                        placeholder="Enter countries separated by commas"
                         register={register}
                         registerOptions={{
+                            required: 'At least one country is required',
                             pattern: {
-                                value: /^[\p{L}0-9 ,.-]{3,}$/u,
+                                value: /^[\p{L}0-9 ]+(?:\s*,\s*[\p{L}0-9 ]+)*$/u,
                                 message:
-                                    'Country name must be at least 3 characters long',
+                                    'Enter valid countries separated by commas',
                             },
                         }}
-                        error={errors.country?.message}
+                        error={errors.countries?.message}
                     />
+
                     <FormInput
                         className="w-full text-sm dark:bg-gray-300 border border-gray-400 rounded-md p-1"
                         label="Production place"
