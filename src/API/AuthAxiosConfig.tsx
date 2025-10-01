@@ -84,7 +84,7 @@ auth_api.interceptors.response.use(
                 toast.warning('Session expired. Please log in.', {
                     autoClose: 1150,
                 });
-                window.history.pushState(null, '', `/auth/login`);
+                window.location.href = '/auth/login';
                 return Promise.reject({
                     message: 'Unauthorized. Please log in!',
                 });

@@ -1,4 +1,8 @@
-import type { ProductForm, Prices } from '../../../Models/Product';
+import type {
+    ProductForm,
+    ProductPayload,
+    Prices,
+} from '../../../Models/Product';
 import { useForm, useFieldArray } from 'react-hook-form';
 import FormInput from '../../FormInput/FormInput';
 import Button from '../../Button/Button';
@@ -53,30 +57,24 @@ const AddProduct = () => {
                 'On submit function before send request to create product'
             );
 
-            const productPayload: ProductForm = {
-                productName: data.productName,
-                brand: data.brand,
-                weightValue: data.weightValue,
-                weightUnit: data.weightUnit,
+            const productPayload: ProductPayload = {
+                ...data,
                 categories: data.categories
-                    .split(', ')
-                    .map((name: string) => ({ categoryName: name.trim() })),
-                prices: data.prices.map(
-                    (price: {
-                        amount: string;
-                        currency: string;
-                        shop: string;
-                    }) => ({
-                        amount: parseFloat(price.amount),
-                        currency: price.currency,
-                        shop: price.shop,
-                        approved: isAdmin ? data.approved : false,
-                    })
-                ),
-                imageUrl: data.imageUrl || '',
-                description: data.description || '',
-                country: data.country || '',
-                productionPlace: data.productionPlace || '',
+                    .split(',')
+                    .map((name: string) => ({ categoryName: name.trim() }))
+                    .filter(
+                        (c: { categoryName: string }) =>
+                            c.categoryName.length > 0
+                    ),
+                prices: data.prices.map((price: Prices) => ({
+                    ...price,
+                    amount: parseFloat(price.amount as any),
+                    approved: isAdmin ? data.approved : false,
+                })),
+                countries: data.countries
+                    .split(',')
+                    .map((name: string) => name.trim())
+                    .filter((name: string) => name.length > 0),
                 approved: isAdmin ? data.approved : false,
             };
 
@@ -101,6 +99,7 @@ const AddProduct = () => {
     const handleNavigation = (path: string) => {
         navigate(path);
     };
+
     return (
         <section className="flex flex-col items-center justify-center bg-gray-100 dark:bg-zinc-800">
             <div className="hidden md:block md:w-1/4 p-6">
@@ -121,7 +120,7 @@ const AddProduct = () => {
                         registerOptions={{
                             required: 'Product name is required',
                             pattern: {
-                                value: /^[a-zA-Z0-9_]{3,30}$/,
+                                value: /^[a-zA-Z0-9_]{3,30}$/u,
                                 message:
                                     'Product name must be 3-30 characters long',
                             },
@@ -199,11 +198,10 @@ const AddProduct = () => {
                         placeholder="e.g. Protein, Fats"
                         register={register}
                         registerOptions={{
-                            required: 'Category is required',
+                            required: 'At least one category is required',
                             pattern: {
-                                value: /^[a-zA-Z,\s]{3,}$/,
-                                message:
-                                    'Category name must be at least 3 characters long',
+                                value: /^[\p{L} ]+(?:\s*,\s*[\p{L} ]+)*$/u,
+                                message: 'Enter at least one valid category',
                             },
                         }}
                         error={errors.categories?.message}
@@ -337,19 +335,19 @@ const AddProduct = () => {
                     />
                     <FormInput
                         className="w-full text-sm dark:bg-gray-300 border border-gray-400 rounded-md p-1"
-                        label="Country"
+                        label="Countries"
                         type="text"
-                        name="country"
+                        name="countries"
                         placeholder="Enter country"
                         register={register}
                         registerOptions={{
                             pattern: {
-                                value: /^[a-zA-Z]{3,}$/,
+                                value: /^[\p{L}0-9 ]+(?:\s*,\s*[\p{L}0-9 ]+)*$/u,
                                 message:
-                                    'Country name must be at least 3 characters long',
+                                    'Enter valid countries separated by commas',
                             },
                         }}
-                        error={errors.country?.message}
+                        error={errors.countries?.message}
                     />
                     <FormInput
                         className="w-full text-sm dark:bg-gray-300 border border-gray-400 rounded-md p-1"

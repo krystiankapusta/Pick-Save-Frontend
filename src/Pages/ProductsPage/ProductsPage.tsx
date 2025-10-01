@@ -31,7 +31,7 @@ const ProductsPage: React.FC = () => {
             prices: [],
             imageUrl: '',
             description: '',
-            country: '',
+            countries: [],
             productionPlace: '',
             approved: false,
         },
@@ -67,7 +67,7 @@ const ProductsPage: React.FC = () => {
                     })),
                     imageUrl: product.imageUrl || '',
                     description: product.description || '',
-                    country: product.country || '',
+                    countries: product.countries.join(', ') || [],
                     productionPlace: product.productionPlace || '',
                     approved: isAdmin ? product.approved : false,
                 });
@@ -134,7 +134,7 @@ const ProductsPage: React.FC = () => {
                     <p><strong>Weight:</strong> ${product.weightValue} ${product.weightUnit}</p>
                     <p><strong>Categories:</strong> ${product.categories.map((c: { categoryName: string }) => c.categoryName).join(', ')}</p>
                     <p>${product.prices.map((p: Prices) => `<strong>Shop:</strong> ${p.shop} <strong>price:</strong> ${p.amount} ${p.currency} `).join('<br/>')}</p>
-                    <p><strong>Country:</strong> ${product.country}</p>
+                    <p><strong>Country:</strong> ${product.countries.join(', ')}</p>
                     <p><strong>Production Place:</strong> ${product.productionPlace}</p>
                 </div>
             `,
